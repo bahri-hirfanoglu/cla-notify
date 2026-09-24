@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.0.2 - 2026-09-24
+
+Fixes found by running the plugin end to end on every platform.
+
+- macOS: cards now appear on macOS 15 and older; the card timestamp format was rejected
+  there, so nothing was shown.
+- macOS: clicking a card returns to the right iTerm2 or Terminal tab again, the card stays
+  quiet while that tab is in front, and it opens on the terminal's screen. AppleScript now
+  addresses both apps by bundle id, since current iTerm2 builds are named "iTerm".
+- `cla-notify focus` works on macOS.
+
 ## 0.0.1 - 2026-09-24
 
 First public release.
