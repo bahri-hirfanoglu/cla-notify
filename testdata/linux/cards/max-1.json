@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "wait",
+  "event": "idle",
+  "sessionId": "sess-max-1",
+  "title": "Max Card 1",
+  "body": "Waiting 1",
+  "options": [],
+  "questionCount": 0,
+  "project": { "name": "cla-notify", "path": "/work" },
+  "focus": { "terminal": "xterm", "appName": "xterm", "cwd": "/work" },
+  "sound": "default",
+  "soundVolume": 0.6,
+  "durationSeconds": 3,
+  "createdAt": "2026-09-24T10:01:00Z",
+  "display": { "corner": "top-right", "screen": "auto", "theme": "auto", "respectDock": true, "maxCards": 3, "showOptions": true, "showContext": false, "showModel": true, "showGit": false },
+  "labels": { "kind": "Waiting", "focusButton": "Back to Terminal", "dismiss": "Dismiss", "moreQuestions": "" }
+}

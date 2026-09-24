@@ -1,0 +1,7 @@
+#!/bin/sh
+# Fake tmux for e2e-linux.sh: records every invocation instead of touching a real tmux session.
+if [ -z "$TMUX_CALL_LOG" ]; then
+  echo "TMUX_CALL_LOG must be set" >&2
+  exit 1
+fi
+echo "tmux $*" >> "$TMUX_CALL_LOG"

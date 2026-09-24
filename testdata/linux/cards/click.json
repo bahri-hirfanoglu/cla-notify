@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "ask",
+  "event": "ask",
+  "sessionId": "sess-click",
+  "title": "cla-notify: Claude has a question",
+  "body": "Pick one E2E_CLICK_MARKER",
+  "options": ["Yes", "No"],
+  "questionCount": 1,
+  "project": { "name": "cla-notify", "path": "/work", "branch": "main" },
+  "focus": { "terminal": "tmux", "appName": "tmux", "tmuxSocket": "/tmp/e2e-tmux.sock", "tmuxPane": "%3", "cwd": "/work" },
+  "sound": "default",
+  "soundVolume": 0.6,
+  "durationSeconds": 5,
+  "createdAt": "2026-09-24T10:02:00Z",
+  "display": { "corner": "top-right", "screen": "auto", "theme": "auto", "respectDock": true, "maxCards": 3, "showOptions": true, "showContext": true, "showModel": true, "showGit": true },
+  "labels": { "kind": "Question", "focusButton": "Back to Terminal", "dismiss": "Dismiss", "context": "12k / 200k", "moreQuestions": "" }
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "ask",
+  "event": "ask",
+  "sessionId": "sess-max-2",
+  "title": "Max Card 2",
+  "body": "Waiting 2",
+  "options": ["Yes", "No"],
+  "questionCount": 1,
+  "project": { "name": "cla-notify", "path": "/work" },
+  "focus": { "terminal": "xterm", "appName": "xterm", "cwd": "/work" },
+  "sound": "bell",
+  "soundVolume": 0.6,
+  "durationSeconds": 3,
+  "createdAt": "2026-09-24T10:01:01Z",
+  "display": { "corner": "top-right", "screen": "auto", "theme": "auto", "respectDock": true, "maxCards": 3, "showOptions": true, "showContext": false, "showModel": true, "showGit": false },
+  "labels": { "kind": "Question", "focusButton": "Back to Terminal", "dismiss": "Dismiss", "moreQuestions": "" }
+}

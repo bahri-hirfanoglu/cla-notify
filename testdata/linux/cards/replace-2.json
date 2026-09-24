@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "done",
+  "event": "done",
+  "sessionId": "sess-replace",
+  "title": "cla-notify: done in 12s",
+  "body": "All good",
+  "options": [],
+  "questionCount": 0,
+  "project": { "name": "cla-notify", "path": "/work" },
+  "focus": { "terminal": "tmux", "appName": "tmux", "cwd": "/work" },
+  "sound": "none",
+  "soundVolume": 0.6,
+  "durationSeconds": 1,
+  "createdAt": "2026-09-24T10:00:05Z",
+  "display": { "corner": "top-right", "screen": "auto", "theme": "auto", "respectDock": true, "maxCards": 3, "showOptions": true, "showContext": false, "showModel": true, "showGit": false },
+  "labels": { "kind": "Done", "focusButton": "Back to Terminal", "dismiss": "Dismiss", "moreQuestions": "" }
+}

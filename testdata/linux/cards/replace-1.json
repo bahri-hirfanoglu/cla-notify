@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "wait",
+  "event": "permission",
+  "sessionId": "sess-replace",
+  "title": "cla-notify: approval needed",
+  "body": "Run this command?",
+  "options": [],
+  "questionCount": 0,
+  "project": { "name": "cla-notify", "path": "/work" },
+  "focus": { "terminal": "tmux", "appName": "tmux", "cwd": "/work" },
+  "sound": "default",
+  "soundVolume": 0.6,
+  "durationSeconds": 4,
+  "createdAt": "2026-09-24T10:00:00Z",
+  "display": { "corner": "top-right", "screen": "auto", "theme": "auto", "respectDock": true, "maxCards": 3, "showOptions": true, "showContext": false, "showModel": true, "showGit": false },
+  "labels": { "kind": "Waiting", "focusButton": "Back to Terminal", "dismiss": "Dismiss", "moreQuestions": "" }
+}
