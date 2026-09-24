@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 150" width="560" height="150">
+  <title>cla-notify</title>
+  <style>
+    .w { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-weight: 700; font-size: 70px; letter-spacing: -2px; }
+    .a { fill: #8F877B; }
+    .b { fill: #D97757; }
+  </style>
+  <svg x="11" y="11" width="128" height="128" viewBox="0 0 512 512">
+  
+  <defs>
+    <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="330" y2="512">
+      <stop offset="0" stop-color="#E4896A"/>
+      <stop offset="1" stop-color="#C45E3D"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#F0ECE1"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#5A2412" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <rect x="1.5" y="1.5" width="509" height="509" rx="114.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="3"/>
+  <g transform="translate(-30 22)">
+    <rect x="96" y="196" width="284" height="204" rx="50" fill="url(#card)" filter="url(#shadow)"/>
+    <rect x="136" y="246" width="44" height="44" rx="14" fill="#D97757"/>
+    <rect x="198" y="252" width="84" height="15" rx="7.5" fill="#1F1E1D"/>
+    <rect x="198" y="276" width="60" height="11" rx="5.5" fill="#1F1E1D" opacity="0.3"/>
+    <rect x="136" y="320" width="200" height="14" rx="7" fill="#1F1E1D" opacity="0.18"/>
+    <rect x="136" y="348" width="136" height="14" rx="7" fill="#1F1E1D" opacity="0.18"/>
+    <circle cx="364" cy="194" r="72" fill="#1F1E1D" stroke="url(#bg)" stroke-width="16" transform="translate(0 0)"/>
+    <path transform="translate(364 194) scale(44)" fill="#F5F4EE" d="M0 -1 C0.1 -0.34 0.34 -0.1 1 0 C0.34 0.1 0.1 0.34 0 1 C-0.1 0.34 -0.34 0.1 -1 0 C-0.34 -0.1 -0.1 -0.34 0 -1 Z"/>
+    <g stroke="#FAF9F5" stroke-width="13" stroke-linecap="round" opacity="0.92">
+      <path d="M364 102 L364 78"/>
+      <path d="M429 129 L446 112"/>
+      <path d="M456 194 L480 194"/>
+    </g>
+  </g>
+</svg>
+  <text class="w" x="166" y="99"><tspan class="a">cla-</tspan><tspan class="b">notify</tspan></text>
+</svg>
