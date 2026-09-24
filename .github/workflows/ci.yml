@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+      - name: go vet
+        run: go vet ./...
+      - name: go test
+        run: go test ./...
+
+  ubuntu-extra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+      - name: check text (no em/en dash)
+        run: ./scripts/check-text.sh
+      - name: linux e2e
+        run: ./scripts/e2e-linux.sh
+
+  macos-hud:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build HUD
+        run: ./scripts/build-hud.sh
+
+  windows-extra:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+      - name: build windows exe
+        run: |
+          version=$(cat VERSION)
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath \
+            -ldflags "-s -w -X github.com/bahri-hirfanoglu/cla-notify/internal/cli.Version=$version" \
+            -o cla-notify.exe ./cmd/cla-notify
+      - name: smoke test
+        env:
+          CLA_NOTIFY_DRYRUN: "1"
+        run: |
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+          ./cla-notify.exe version
+          ./cla-notify.exe config show
+          ./cla-notify.exe doctor
+          ./cla-notify.exe test all
