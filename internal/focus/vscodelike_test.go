@@ -3,6 +3,7 @@ package focus
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -13,6 +14,11 @@ func writeFakeCLI(t *testing.T, dir, name, logPath string) {
 	t.Helper()
 	script := "#!/bin/sh\necho \"$0 $*\" >> \"" + logPath + "\"\n"
 	path := filepath.Join(dir, name)
+	// Windows cannot run a shell script, so the fake is a batch file found through PATHEXT.
+	if runtime.GOOS == "windows" {
+		script = "@echo %~n0 %*>> \"" + logPath + "\"\r\n"
+		path += ".bat"
+	}
 	if err := os.WriteFile(path, []byte(script), 0o755); err != nil {
 		t.Fatalf("write fake %s: %v", name, err)
 	}
