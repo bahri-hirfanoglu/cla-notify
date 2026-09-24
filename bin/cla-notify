@@ -5,14 +5,18 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 os=$(uname -s)
 arch=$(uname -m)
 
-case "$os" in
-  Darwin) plat=darwin ;;
-  Linux) plat=linux ;;
-  MINGW*|MSYS*|CYGWIN*) plat=windows ;;
+# Lowercase before matching: some Windows-on-Arm Git Bash builds report "ARM64" instead of "arm64".
+os_lc=$(printf '%s' "$os" | tr '[:upper:]' '[:lower:]')
+arch_lc=$(printf '%s' "$arch" | tr '[:upper:]' '[:lower:]')
+
+case "$os_lc" in
+  darwin) plat=darwin ;;
+  linux) plat=linux ;;
+  mingw*|msys*|cygwin*) plat=windows ;;
   *) plat="" ;;
 esac
 
-case "$arch" in
+case "$arch_lc" in
   x86_64|amd64) goarch=amd64 ;;
   arm64|aarch64) goarch=arm64 ;;
   *) goarch="" ;;
