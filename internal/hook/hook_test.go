@@ -332,3 +332,18 @@ func TestCardWithoutOptionsEncodesEmptyArray(t *testing.T) {
 		t.Errorf("card JSON lacks \"options\":[], the macOS HUD rejects null: %s", data)
 	}
 }
+
+func TestCardCreatedAtHasWholeSeconds(t *testing.T) {
+	deps := testDeps(t, time.Date(2026, 9, 24, 10, 0, 0, 123456789, time.UTC))
+	c, err := Process(readFixture(t, "idle.json"), deps)
+	if err != nil || c == nil {
+		t.Fatalf("Process(idle) = %v, %v", c, err)
+	}
+	data, err := json.Marshal(c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(data), `"createdAt":"2026-09-24T10:00:00Z"`) {
+		t.Errorf("createdAt must be whole seconds for older macOS HUD decoders: %s", data)
+	}
+}
