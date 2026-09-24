@@ -1,5 +1,12 @@
 <p align="center"><img src="docs/logo.svg" alt="cla-notify" width="420"></p>
 
+<p align="center">
+  <a href="https://github.com/bahri-hirfanoglu/cla-notify/actions/workflows/ci.yml"><img src="https://github.com/bahri-hirfanoglu/cla-notify/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+  <a href="https://github.com/bahri-hirfanoglu/cla-notify/releases/latest"><img src="https://img.shields.io/github/v/release/bahri-hirfanoglu/cla-notify" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/bahri-hirfanoglu/cla-notify" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-blue" alt="Platforms: macOS, Linux, Windows">
+</p>
+
 <p align="center"><a href="https://bahri-hirfanoglu.github.io/cla-notify/">Website</a> · <a href="#install">Install</a> · <a href="#configuration-reference">Configuration</a> · <a href="#troubleshooting">Troubleshooting</a></p>
 
 # cla-notify
@@ -147,4 +154,7 @@ no-dash text check) before committing.
 ## Contributing
 
 See `CLAUDE.md` for the project's rules (English only, no em/en dash, comment style, commit
-style, file ownership).
+style, file ownership) and [CONTRIBUTING.md](CONTRIBUTING.md) for dev setup, testing cards and
+the PR workflow. Participation is governed by the
+[Code of Conduct](CODE_OF_CONDUCT.md). Report vulnerabilities per
+[SECURITY.md](SECURITY.md), not in a public issue.
