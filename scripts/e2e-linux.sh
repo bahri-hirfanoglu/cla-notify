@@ -14,9 +14,9 @@ apt-get update -qq
 apt-get install -y -qq dbus
 
 echo "-- building the e2e binaries --"
-go build -o /tmp/cla-notify ./cmd/cla-notify
-go build -o /tmp/fakenotify ./scripts/e2e-linux/fakenotify
-go build -o /tmp/check ./scripts/e2e-linux/check
+go build -buildvcs=false -o /tmp/cla-notify ./cmd/cla-notify
+go build -buildvcs=false -o /tmp/fakenotify ./scripts/e2e-linux/fakenotify
+go build -buildvcs=false -o /tmp/check ./scripts/e2e-linux/check
 
 echo "-- starting a private session bus --"
 DBUS_SESSION_BUS_ADDRESS="$(dbus-daemon --session --fork --print-address)"
