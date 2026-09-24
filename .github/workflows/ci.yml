@@ -81,6 +81,9 @@ jobs:
           ls "$CLA_NOTIFY_STATE_DIR/cards"
           card=$(cygpath -w "$CLA_NOTIFY_STATE_DIR/cards/test-ask.json")
           escaped=$(powershell -NoProfile -Command "[uri]::EscapeDataString('$card')")
-          ./cla-notify.exe focus-url "cla-notify://focus?card=$escaped"
+          # The runner has no terminal window, so the only acceptable failure is "no terminal window".
+          out=$(./cla-notify.exe focus-url "cla-notify://focus?card=$escaped" 2>&1) || echo "$out" | grep -q "no terminal window to focus"
           test ! -e "$CLA_NOTIFY_STATE_DIR/cards/test-ask.json"
-          if ./cla-notify.exe focus-url "cla-notify://focus?card=C%3A%5CWindows%5Cwin.ini"; then echo "focus-url accepted a path outside the cards dir"; exit 1; fi
+          if out=$(./cla-notify.exe focus-url "cla-notify://focus?card=C%3A%5CWindows%5Cwin.ini" 2>&1); then echo "focus-url accepted a path outside the cards dir"; exit 1; fi
+          echo "$out"
+          if echo "$out" | grep -q "no terminal window"; then echo "focus-url read a file outside the cards dir"; exit 1; fi
