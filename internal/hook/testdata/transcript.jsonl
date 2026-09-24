@@ -1,0 +1,3 @@
+{"type":"attachment","attachment":{"type":"model","identity":{"modelId":"claude-opus-5-5[1m]"}}}
+{"type":"user","message":{"content":"Please fix the failing test"},"timestamp":"2024-01-01T00:00:00Z"}
+{"type":"assistant","message":{"model":"claude-opus-5-5","content":[{"type":"text","text":"Fixed the failing test and reran the suite."}],"usage":{"input_tokens":80000,"cache_read_input_tokens":4000,"cache_creation_input_tokens":0}}}

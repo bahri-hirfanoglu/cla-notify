@@ -1,0 +1,2 @@
+{"type":"user","message":{"content":[{"type":"tool_result","content":"ok"}]},"timestamp":"2024-01-01T00:00:00Z"}
+{"type":"assistant","message":{"model":"claude-opus-5-5","content":[{"type":"text","text":"done"}]}}

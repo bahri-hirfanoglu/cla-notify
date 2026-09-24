@@ -1,0 +1,31 @@
+{
+  "session_id": "sess-1",
+  "cwd": "/tmp/project",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "AskUserQuestion",
+  "tool_input": {
+    "questions": [
+      {
+        "question": "Which approach do you prefer?",
+        "options": [
+          {"label": "Keep current structure"},
+          {"label": "Refactor"}
+        ]
+      },
+      {
+        "question": "Should tests run in CI?",
+        "options": [
+          {"label": "Yes"},
+          {"label": "No"}
+        ]
+      },
+      {
+        "question": "Which branch should this land on?",
+        "options": [
+          {"label": "main"},
+          {"label": "release"}
+        ]
+      }
+    ]
+  }
+}

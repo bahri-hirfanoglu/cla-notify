@@ -1,0 +1,2 @@
+{"type":"assistant","isSidechain":true,"message":{"model":"claude-haiku-5","content":[{"type":"text","text":"side text"}],"usage":{"input_tokens":50}}}
+{"type":"assistant","message":{"model":"claude-sonnet-5","content":[{"type":"text","text":"main text"}],"usage":{"input_tokens":100}}}

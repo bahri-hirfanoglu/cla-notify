@@ -1,0 +1,5 @@
+{
+  "session_id": "sess-1",
+  "cwd": "/tmp/project",
+  "hook_event_name": "UserPromptSubmit"
+}
