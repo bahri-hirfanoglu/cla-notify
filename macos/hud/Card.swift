@@ -94,7 +94,14 @@ struct CardDocument: Codable {
 extension CardDocument {
     private static let decoder: JSONDecoder = {
         let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
+        // .iso8601 rejects fractional seconds before macOS 26, so both forms are parsed explicitly.
+        d.dateDecodingStrategy = .custom { decoder in
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            let withFraction = ISO8601DateFormatter()
+            withFraction.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = withFraction.date(from: raw) ?? ISO8601DateFormatter().date(from: raw) { return date }
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "invalid ISO 8601 date: \(raw)"))
+        }
         return d
     }()
 

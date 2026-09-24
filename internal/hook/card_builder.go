@@ -126,7 +126,7 @@ func buildCard(p cardParams) *card.Card {
 		Sound:          resolveSound(p.eventCfg.Sound),
 		SoundVolume:    p.cfg.Sound.Volume,
 		DurationSecs:   p.eventCfg.DurationSeconds,
-		CreatedAt:      p.now,
+		CreatedAt:      p.now.Truncate(time.Second),
 		Display: card.Display{
 			Corner: p.cfg.Display.Corner, Screen: p.cfg.Display.Screen, Theme: p.cfg.Display.Theme,
 			RespectDock: p.cfg.Display.RespectDock, MaxCards: p.cfg.Display.MaxCards,

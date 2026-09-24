@@ -43,7 +43,7 @@ func darwinFocus(t card.FocusTarget) error {
 	path := filepath.Join(dir, id+".json")
 
 	// The HUD decodes a complete card, so every required field gets a valid value.
-	data, err := json.Marshal(card.Card{Version: card.Version, Kind: card.KindDone, Options: []string{}, Focus: t, CreatedAt: time.Now()})
+	data, err := json.Marshal(card.Card{Version: card.Version, Kind: card.KindDone, Options: []string{}, Focus: t, CreatedAt: time.Now().Truncate(time.Second)})
 	if err != nil {
 		return err
 	}
