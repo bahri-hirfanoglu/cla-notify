@@ -30,6 +30,8 @@ jobs:
           go-version: "1.25"
       - name: check text (no em/en dash)
         run: ./scripts/check-text.sh
+      - name: launcher OS/arch detection table test
+        run: ./scripts/test-launcher.sh
       - name: linux e2e
         run: ./scripts/e2e-linux.sh
 
@@ -87,3 +89,212 @@ jobs:
           if out=$(./cla-notify.exe focus-url "cla-notify://focus?card=C%3A%5CWindows%5Cwin.ini" 2>&1); then echo "focus-url accepted a path outside the cards dir"; exit 1; fi
           echo "$out"
           if echo "$out" | grep -q "no terminal window"; then echo "focus-url read a file outside the cards dir"; exit 1; fi
+
+  # Never builds Go: runs the binaries already committed in dist/ through bin/cla-notify, the
+  # way a plugin install actually invokes them, on every OS/CPU we ship for.
+  dist-smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: linux-x64
+            runner: ubuntu-latest
+          - label: linux-arm64
+            runner: ubuntu-24.04-arm
+          - label: macos-arm64
+            runner: macos-latest
+          - label: macos-x64
+            runner: macos-13
+          - label: windows-x64
+            runner: windows-latest
+          - label: windows-arm64
+            runner: windows-11-arm
+    name: dist-smoke (${{ matrix.label }})
+    runs-on: ${{ matrix.runner }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: version, doctor, config
+        env:
+          CLA_NOTIFY_DRYRUN: "1"
+        run: |
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+
+          want=$(cat VERSION)
+          got=$(bash bin/cla-notify version)
+          [ "$got" = "$want" ] || { echo "version: got $got, want $want"; exit 1; }
+
+          bash bin/cla-notify doctor
+
+          bash bin/cla-notify config set events.done.title "Finished {project}"
+          got=$(bash bin/cla-notify config get events.done.title)
+          [ "$got" = "Finished {project}" ] || { echo "config get: got $got"; exit 1; }
+
+          if bash bin/cla-notify config set display.corner middle; then
+            echo "config set accepted an invalid corner"
+            exit 1
+          fi
+
+          bash bin/cla-notify config validate
+
+      - name: hook fixtures through the launcher, dry run
+        env:
+          CLA_NOTIFY_DRYRUN: "1"
+        run: |
+          # Every event fixture but SessionStart, UserPromptSubmit and an already-active Stop shows a card.
+          parse_field() {
+            if command -v jq >/dev/null 2>&1; then
+              printf '%s' "$1" | jq -r ".$2"
+            else
+              printf '%s' "$1" | python3 -c "import json,sys; print(json.load(sys.stdin).get(\"$2\", \"\"))"
+            fi
+          }
+
+          for f in internal/hook/testdata/*.json; do
+            name=$(basename "$f")
+            # A fresh state dir per fixture: fixtures share session_id "sess-1", and a shared state
+            # dir would let ask.json's askedAtGuard silently swallow the very next Notification fixture.
+            tmp=$(mktemp -d)
+            export CLA_NOTIFY_CONFIG="$tmp/config.json"
+            export CLA_NOTIFY_STATE_DIR="$tmp/state"
+            out=$(bash bin/cla-notify hook < "$f")
+            code=$?
+            [ "$code" -eq 0 ] || { echo "$name: exit $code"; exit 1; }
+
+            case "$name" in
+              sessionstart.json|userpromptsubmit.json|stop_active.json)
+                [ -z "$out" ] || { echo "$name: expected no card, got: $out"; exit 1; }
+                ;;
+              *)
+                [ -n "$out" ] || { echo "$name: expected a card, got no stdout"; exit 1; }
+                kind=$(parse_field "$out" kind)
+                title=$(parse_field "$out" title)
+                [ -n "$kind" ] || { echo "$name: card has no kind"; exit 1; }
+                [ -n "$title" ] || { echo "$name: card has no title"; exit 1; }
+                ;;
+            esac
+          done
+
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+
+          out=$(printf '{not json' | bash bin/cla-notify hook)
+          code=$?
+          [ "$code" -eq 0 ] || { echo "invalid json: exit $code"; exit 1; }
+          [ -z "$out" ] || { echo "invalid json: expected no stdout, got: $out"; exit 1; }
+
+          bash bin/cla-notify test all
+
+      - name: hooks.json entry as Claude Code invokes it
+        env:
+          CLA_NOTIFY_DRYRUN: "1"
+        run: |
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+          export CLAUDE_PLUGIN_ROOT="$PWD"
+
+          if command -v jq >/dev/null 2>&1; then
+            cmd=$(jq -r '.hooks.Notification[0].hooks[0].command' hooks/hooks.json)
+          else
+            cmd=$(python3 -c "import json; print(json.load(open('hooks/hooks.json'))['hooks']['Notification'][0]['hooks'][0]['command'])")
+          fi
+
+          out=$(eval "$cmd" < internal/hook/testdata/permission.json)
+          [ -n "$out" ] || { echo "hooks.json entry produced no card"; exit 1; }
+
+      - name: macOS HUD checks
+        if: runner.os == 'macOS'
+        run: |
+          dist/cla-notify-hud version
+
+          archs=$(lipo -archs dist/cla-notify-darwin)
+          echo "cla-notify-darwin archs: $archs"
+          echo "$archs" | grep -q x86_64
+          echo "$archs" | grep -q arm64
+
+          archs=$(lipo -archs dist/cla-notify-hud)
+          echo "cla-notify-hud archs: $archs"
+          echo "$archs" | grep -q x86_64
+          echo "$archs" | grep -q arm64
+
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+          CLA_NOTIFY_DRYRUN=1 bash bin/cla-notify test ask > "$tmp/card.json"
+          dist/cla-notify-hud render "$tmp/card.json" "$tmp/card.png"
+          [ -s "$tmp/card.png" ] || { echo "render produced an empty PNG"; exit 1; }
+
+      - name: Windows live toast
+        if: runner.os == 'Windows'
+        run: |
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+          bash bin/cla-notify test ask
+          if [ -f "$CLA_NOTIFY_STATE_DIR/cla-notify.log" ]; then
+            cat "$CLA_NOTIFY_STATE_DIR/cla-notify.log"
+            exit 1
+          fi
+
+  # A real Linux notification daemon (dunst), not the fakenotify stub e2e-linux.sh drives.
+  linux-real-daemon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install dunst and a headless X display
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq dunst xvfb dbus-x11
+      - name: run cla-notify test all against dunst
+        run: |
+          set -eu
+
+          Xvfb :99 -screen 0 1280x1024x24 &
+          xvfb_pid=$!
+          export DISPLAY=:99
+
+          eval "$(dbus-launch --sh-syntax)"
+
+          dunst &
+          dunst_pid=$!
+
+          cleanup() {
+            kill "$dunst_pid" 2>/dev/null || true
+            kill "$DBUS_SESSION_BUS_PID" 2>/dev/null || true
+            kill "$xvfb_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          echo "-- waiting for dunst to own org.freedesktop.Notifications --"
+          for i in $(seq 1 50); do
+            if dbus-send --session --print-reply --dest=org.freedesktop.Notifications \
+                /org/freedesktop/Notifications org.freedesktop.Notifications.GetServerInformation \
+                >/dev/null 2>&1; then
+              break
+            fi
+            sleep 0.2
+          done
+
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+
+          bash bin/cla-notify test all
+          sleep 2
+
+          echo "-- checking dunst's history for our cards --"
+          history=$(dunstctl history -j)
+          echo "$history" | grep -q "Claude has a question" || {
+            echo "dunst never received the ask card"
+            echo "$history"
+            exit 1
+          }
+
+          echo "-- doctor must report the presenter check ok --"
+          bash bin/cla-notify doctor | tee "$tmp/doctor.txt"
+          grep -q "check: ok" "$tmp/doctor.txt"
