@@ -57,7 +57,7 @@ enum Terminal {
         case "iTerm.app":
             guard let raw = target.itermSessionId, let sessionId = sanitized(raw) else { return }
             let script = """
-            tell application "iTerm2"
+            tell application id "com.googlecode.iterm2"
                 activate
                 repeat with w in windows
                     repeat with t in tabs of w
@@ -80,7 +80,7 @@ enum Terminal {
                 return
             }
             let script = """
-            tell application "Terminal"
+            tell application id "com.apple.Terminal"
                 activate
                 repeat with w in windows
                     repeat with tb in tabs of w
@@ -121,7 +121,7 @@ enum Terminal {
         case "iTerm.app":
             guard let raw = target.itermSessionId, let sessionId = sanitized(raw) else { return nil }
             let script = """
-            tell application "iTerm2"
+            tell application id "com.googlecode.iterm2"
                 repeat with w in windows
                     repeat with t in tabs of w
                         repeat with s in sessions of t
@@ -139,7 +139,7 @@ enum Terminal {
         case "Apple_Terminal":
             guard let raw = target.tty, let tty = sanitized(stripDevPrefix(raw)) else { return nil }
             let script = """
-            tell application "Terminal"
+            tell application id "com.apple.Terminal"
                 repeat with w in windows
                     repeat with tb in tabs of w
                         if tty of tb is "/dev/\(tty)" then
@@ -172,7 +172,7 @@ enum Terminal {
         case "iTerm.app":
             guard let raw = target.itermSessionId, let sessionId = sanitized(raw) else { return false }
             let script = """
-            tell application "iTerm2"
+            tell application id "com.googlecode.iterm2"
                 try
                     return id of current session of current window is "\(sessionId)"
                 on error
@@ -184,7 +184,7 @@ enum Terminal {
         case "Apple_Terminal":
             guard let raw = target.tty, let tty = sanitized(stripDevPrefix(raw)) else { return false }
             let script = """
-            tell application "Terminal"
+            tell application id "com.apple.Terminal"
                 try
                     return tty of selected tab of front window is "/dev/\(tty)"
                 on error

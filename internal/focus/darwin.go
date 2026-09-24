@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 
 	"github.com/bahri-hirfanoglu/cla-notify/internal/card"
 	"github.com/bahri-hirfanoglu/cla-notify/internal/paths"
@@ -41,7 +42,8 @@ func darwinFocus(t card.FocusTarget) error {
 	}
 	path := filepath.Join(dir, id+".json")
 
-	data, err := json.Marshal(card.Card{Version: card.Version, Focus: t})
+	// The HUD decodes a complete card, so every required field gets a valid value.
+	data, err := json.Marshal(card.Card{Version: card.Version, Kind: card.KindDone, Options: []string{}, Focus: t, CreatedAt: time.Now()})
 	if err != nil {
 		return err
 	}
