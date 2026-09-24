@@ -7,7 +7,7 @@ import (
 )
 
 // Version is the cla-notify release version.
-var Version = "0.1.0"
+var Version = "0.0.1"
 
 // Run dispatches args[0] to a subcommand and returns the process exit code.
 // 0 is ok, 1 is a validation or usage-level failure the command reported, 64 is bad usage.
