@@ -1,0 +1,14 @@
+{
+  "name": "cla-notify",
+  "description": "Marketplace for the cla-notify Claude Code plugin.",
+  "owner": {
+    "name": "bahri-hirfanoglu"
+  },
+  "plugins": [
+    {
+      "name": "cla-notify",
+      "source": "./",
+      "description": "Desktop notification when Claude asks a question, waits for approval or input, or finishes a turn."
+    }
+  ]
+}

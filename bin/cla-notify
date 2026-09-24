@@ -1,0 +1,38 @@
+#!/bin/sh
+# Picks the right prebuilt binary in dist/ for this OS/arch and execs it with all args.
+root=$(cd "$(dirname "$0")/.." && pwd)
+
+os=$(uname -s)
+arch=$(uname -m)
+
+case "$os" in
+  Darwin) plat=darwin ;;
+  Linux) plat=linux ;;
+  MINGW*|MSYS*|CYGWIN*) plat=windows ;;
+  *) plat="" ;;
+esac
+
+case "$arch" in
+  x86_64|amd64) goarch=amd64 ;;
+  arm64|aarch64) goarch=arm64 ;;
+  *) goarch="" ;;
+esac
+
+bin=""
+if [ "$plat" = "darwin" ]; then
+  bin="$root/dist/cla-notify-darwin"
+elif [ -n "$plat" ] && [ -n "$goarch" ]; then
+  bin="$root/dist/cla-notify-$plat-$goarch"
+  [ "$plat" = "windows" ] && bin="$bin.exe"
+fi
+
+if [ -z "$bin" ] || [ ! -x "$bin" ]; then
+  if [ "$1" = "hook" ]; then
+    echo "cla-notify: no binary for $os/$arch, skipping hook" >&2
+    exit 0
+  fi
+  echo "cla-notify: no binary for this platform ($os/$arch)" >&2
+  exit 1
+fi
+
+exec "$bin" "$@"

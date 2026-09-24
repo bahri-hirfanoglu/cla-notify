@@ -1,0 +1,13 @@
+{
+  "name": "cla-notify",
+  "version": "0.1.0",
+  "displayName": "cla-notify",
+  "description": "Desktop notification when Claude asks a question, waits for approval or input, or finishes a turn; clicking it returns to the terminal the session runs in. Runs on macOS, Linux and Windows.",
+  "author": {
+    "name": "Bahri Hirfanoglu"
+  },
+  "homepage": "https://github.com/bahri-hirfanoglu/cla-notify",
+  "repository": "https://github.com/bahri-hirfanoglu/cla-notify",
+  "license": "MIT",
+  "keywords": ["notification", "macos", "linux", "windows", "hooks", "terminal"]
+}

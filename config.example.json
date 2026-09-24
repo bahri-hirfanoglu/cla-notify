@@ -1,0 +1,64 @@
+{
+  "enabled": true,
+  "events": {
+    "ask": {
+      "enabled": true,
+      "title": "{project}: Claude has a question",
+      "body": "{question}",
+      "sound": "default",
+      "durationSeconds": 20
+    },
+    "permission": {
+      "enabled": true,
+      "title": "{project}: approval needed",
+      "body": "{message}",
+      "sound": "default",
+      "durationSeconds": 20
+    },
+    "idle": {
+      "enabled": true,
+      "title": "{project}: waiting for your input",
+      "body": "{message}",
+      "sound": "default",
+      "durationSeconds": 12
+    },
+    "done": {
+      "enabled": true,
+      "title": "{project}: done in {duration}",
+      "body": "{summary}",
+      "sound": "default",
+      "durationSeconds": 8,
+      "minTurnSeconds": 0
+    }
+  },
+  "display": {
+    "corner": "top-right",
+    "screen": "auto",
+    "theme": "auto",
+    "respectDock": true,
+    "maxCards": 3,
+    "suppressWhenFocused": true,
+    "showOptions": true,
+    "showContext": true,
+    "showModel": true,
+    "showGit": true
+  },
+  "sound": {
+    "volume": 0.6
+  },
+  "labels": {
+    "ask": "Question",
+    "wait": "Waiting",
+    "done": "Done",
+    "focusButton": "Back to {app}",
+    "dismiss": "Dismiss",
+    "moreQuestions": "+{count} more questions"
+  },
+  "contextWindow": {
+    "default": 200000,
+    "models": {
+      "opus": 1000000,
+      "sonnet": 1000000
+    }
+  }
+}
