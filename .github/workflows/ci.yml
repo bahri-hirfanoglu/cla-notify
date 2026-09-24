@@ -67,3 +67,15 @@ jobs:
           ./cla-notify.exe config show
           ./cla-notify.exe doctor
           ./cla-notify.exe test all
+      - name: live toast
+        run: |
+          tmp=$(mktemp -d)
+          export CLA_NOTIFY_CONFIG="$tmp/config.json"
+          export CLA_NOTIFY_STATE_DIR="$tmp/state"
+          ./cla-notify.exe doctor | tee doctor.txt
+          grep -q "check: ok" doctor.txt
+          ./cla-notify.exe test ask
+          if [ -f "$CLA_NOTIFY_STATE_DIR/cla-notify.log" ]; then cat "$CLA_NOTIFY_STATE_DIR/cla-notify.log"; exit 1; fi
+          reg query 'HKCU\Software\Classes\cla-notify\shell\open\command'
+          ls "$APPDATA/Microsoft/Windows/Start Menu/Programs/cla-notify.lnk"
+          ls "$CLA_NOTIFY_STATE_DIR/cards"
