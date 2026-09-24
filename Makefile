@@ -23,6 +23,7 @@ vet:
 
 check: test vet
 	./scripts/check-text.sh
+	./scripts/test-launcher.sh
 
 e2e-linux:
 	./scripts/e2e-linux.sh
