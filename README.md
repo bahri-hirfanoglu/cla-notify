@@ -1,12 +1,32 @@
+<p align="center"><img src="docs/logo.svg" alt="cla-notify" width="420"></p>
+
+<p align="center"><a href="https://bahri-hirfanoglu.github.io/cla-notify/">Website</a> · <a href="#install">Install</a> · <a href="#configuration-reference">Configuration</a> · <a href="#troubleshooting">Troubleshooting</a></p>
+
 # cla-notify
 
 A Claude Code plugin that shows a desktop notification when Claude asks a question, waits for
 approval or input, or finishes a turn. Clicking the notification returns focus to the terminal
 the session runs in. Runs on macOS, Linux and Windows.
 
+An unofficial community plugin, not affiliated with Anthropic. Project site:
+[bahri-hirfanoglu.github.io/cla-notify](https://bahri-hirfanoglu.github.io/cla-notify/) (source in `docs/`).
+
 ## Screenshots
 
-(placeholder: macOS HUD, Linux notification, Windows toast)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hero-dark.png">
+  <img src="docs/screenshots/hero-light.png" alt="Three cla-notify cards stacked in the top right corner of a macOS desktop: a question, an approval request and a finished turn" width="100%">
+</picture>
+
+Real macOS cards, rendered by the bundled HUD (`cla-notify-hud render`). On Linux and Windows
+the same text appears through the system's own notifications.
+
+| | Dark | Light |
+|---|---|---|
+| **Question** | <img src="docs/screenshots/ask-dark.png" alt="Question card, dark" width="380"> | <img src="docs/screenshots/ask-light.png" alt="Question card, light" width="380"> |
+| **Approval** | <img src="docs/screenshots/permission-dark.png" alt="Approval card, dark" width="380"> | <img src="docs/screenshots/permission-light.png" alt="Approval card, light" width="380"> |
+| **Waiting** | <img src="docs/screenshots/idle-dark.png" alt="Waiting card, dark" width="380"> | <img src="docs/screenshots/idle-light.png" alt="Waiting card, light" width="380"> |
+| **Done** | <img src="docs/screenshots/done-dark.png" alt="Done card, dark" width="380"> | <img src="docs/screenshots/done-light.png" alt="Done card, light" width="380"> |
 
 ## Install
 
