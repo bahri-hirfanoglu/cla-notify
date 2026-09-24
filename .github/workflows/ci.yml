@@ -79,3 +79,8 @@ jobs:
           reg query 'HKCU\Software\Classes\cla-notify\shell\open\command'
           ls "$APPDATA/Microsoft/Windows/Start Menu/Programs/cla-notify.lnk"
           ls "$CLA_NOTIFY_STATE_DIR/cards"
+          card=$(cygpath -w "$CLA_NOTIFY_STATE_DIR/cards/test-ask.json")
+          escaped=$(powershell -NoProfile -Command "[uri]::EscapeDataString('$card')")
+          ./cla-notify.exe focus-url "cla-notify://focus?card=$escaped"
+          test ! -e "$CLA_NOTIFY_STATE_DIR/cards/test-ask.json"
+          if ./cla-notify.exe focus-url "cla-notify://focus?card=C%3A%5CWindows%5Cwin.ini"; then echo "focus-url accepted a path outside the cards dir"; exit 1; fi
