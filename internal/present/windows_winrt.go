@@ -42,11 +42,8 @@ var (
 // ensureWinRT initializes COM and the Windows Runtime once per process.
 func ensureWinRT() error {
 	winrtOnce.Do(func() {
-		if err := ole.CoInitializeEx(0, ole.COINIT_MULTITHREADED); err != nil {
-			winrtErr = err
-			return
-		}
-		winrtErr = ole.RoInitialize(1) // RO_INIT_MULTITHREADED
+		// RoInitialize also initializes COM; go-ole reports S_FALSE ("already initialized") as an error.
+		winrtErr = ignoreAlreadyInitialized(ole.RoInitialize(1)) // RO_INIT_MULTITHREADED
 	})
 	return winrtErr
 }
