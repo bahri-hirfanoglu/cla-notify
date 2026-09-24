@@ -1,0 +1,63 @@
+name: Bug report
+description: Something is not working as expected
+labels: ["bug"]
+body:
+  - type: input
+    id: os
+    attributes:
+      label: OS and version
+      description: e.g. macOS 15.1, Ubuntu 24.04, Windows 11
+      placeholder: macOS 15.1
+    validations:
+      required: true
+  - type: input
+    id: terminal
+    attributes:
+      label: Terminal
+      description: The terminal application and, if relevant, multiplexer (tmux, screen)
+      placeholder: iTerm2, tmux 3.4
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: cla-notify version
+      description: Output of `cla-notify version`
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: cla-notify doctor output
+      description: Paste the full output of `cla-notify doctor`
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you do, in order?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log from the state directory
+      description: Contents of `cla-notify.log` in your state directory, if present (path shown by `cla-notify doctor`)
+      render: text
+    validations:
+      required: false

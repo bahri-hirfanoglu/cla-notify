@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and discussion
+    url: https://github.com/bahri-hirfanoglu/cla-notify/discussions
+    about: Ask questions or discuss ideas before filing an issue.
+  - name: Report a security vulnerability
+    url: https://github.com/bahri-hirfanoglu/cla-notify/security/advisories/new
+    about: Report a security issue privately instead of opening a public issue.
